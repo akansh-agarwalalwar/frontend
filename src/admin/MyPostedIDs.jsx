@@ -70,13 +70,13 @@ export default function MyPostedIDs() {
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-blue-50 group-hover:opacity-90 transition-opacity relative">
                 {row.media && row.media.length > 0 && row.media[0]?.type === 'image' ? (
                   <img 
-                    src={row.media[0].url || bgmiPlaceholderImage} 
+                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
                     alt={row.title}
                     className="h-48 w-full object-cover object-center" 
                   />
                 ) : row.media && row.media.length > 0 && row.media[0]?.type === 'video' ? (
                   <video 
-                    src={row.media[0].url || bgmiPlaceholderImage} 
+                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
                     className="h-48 w-full object-cover object-center" 
                     controls 
                   />

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Card from '../components/Card';
 
@@ -10,7 +9,7 @@ export default function AllPostedIDs() {
   const fetchPostedIDs = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch('https://swarg-store-backend.onrender.com/api/ids/get-my-posted', {  // Adjust endpoint to your API
+      const res = await fetch('https://swarg-store-backend.onrender.com/api/ids/get-my-posted', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -42,7 +41,7 @@ export default function AllPostedIDs() {
           <Card key={row._id} className="p-4 sm:p-6 overflow-hidden flex flex-col h-full">
             <div className="relative bg-gray-100 flex items-center justify-center h-40 sm:h-48 mb-4 rounded-xl">
               {row.media?.[0]?.type === 'image' ? (
-                <img src={row.media[0].url} alt="media" className="object-contain h-full w-full rounded-xl" />
+                <img src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} alt="media" className="object-contain h-full w-full rounded-xl" />
               ) : null}
               {row.status === 'sold out' && (
                 <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold">SOLD</span>
@@ -63,6 +62,11 @@ export default function AllPostedIDs() {
                   row.status === 'sold out' ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-105'
                 }`}
                 disabled={row.status === 'sold out'}
+                onClick={() => {
+                  if (row.status !== 'sold out' && row.telegramLink) {
+                    window.open(row.telegramLink, '_blank');
+                  }
+                }}
               >
                 {row.status === 'sold out' ? 'Sold Out' : 'Buy Now'}
               </button>

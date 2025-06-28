@@ -10,7 +10,7 @@ import YouTubeVideos from '../components/YouTubeVideos';
 import TelegramLinkCard from '../components/TelegramLinkCard';
 
 function AdminPanel() {
-  const [section, setSection] = useState('subadmins');
+  const [section, setSection] = useState('all');
   const navigate = useNavigate();
   // Dummy data for sub admins
   const [subAdmins, setSubAdmins] = useState([

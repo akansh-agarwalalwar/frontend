@@ -112,7 +112,7 @@ function UserPanel() {
               <input
                 type="text"
                 placeholder="Search products..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md leading-5 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:placeholder-gray-500 focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:placeholder-gray-500 focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 sm:text-sm"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
@@ -121,14 +121,14 @@ function UserPanel() {
 
           {/* Mobile Navigation Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden border-t border-gray-700 py-4">
+            <div className="md:hidden border-t bordborder-2 py-4">
               <div className="space-y-1">
                 <button
                   onClick={() => { setSection('home'); setMobileMenuOpen(false); }}
                   className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
                     section === 'home' 
-                      ? 'text-cyan-400 bg-gray-700 shadow-lg shadow-cyan-400/20' 
-                      : 'text-gray-300 hover:text-cyan-400 hover:bg-gray-700'
+                      ? 'text-cyan-400 border-2 shadow-lg shadow-cyan-400/20' 
+                      : 'text-gray-300 hover:text-cyan-400 hover:border-2'
                   }`}
                 >
                   Home
@@ -137,8 +137,8 @@ function UserPanel() {
                   onClick={() => { setSection('all'); setMobileMenuOpen(false); }}
                   className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
                     section === 'all' 
-                      ? 'text-cyan-400 bg-gray-700 shadow-lg shadow-cyan-400/20' 
-                      : 'text-gray-300 hover:text-cyan-400 hover:bg-gray-700'
+                      ? 'text-cyan-400 border-2 shadow-lg shadow-cyan-400/20' 
+                      : 'text-gray-300 hover:text-cyan-400 hover:border-2'
                   }`}
                 >
                   All Products
@@ -147,8 +147,8 @@ function UserPanel() {
                   onClick={() => { setSection('videos'); setMobileMenuOpen(false); }}
                   className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
                     section === 'videos' 
-                      ? 'text-cyan-400 bg-gray-700 shadow-lg shadow-cyan-400/20' 
-                      : 'text-gray-300 hover:text-cyan-400 hover:bg-gray-700'
+                      ? 'text-cyan-400 border-2 shadow-lg shadow-cyan-400/20' 
+                      : 'text-gray-300 hover:text-cyan-400 hover:border-2'
                   }`}
                 >
                   Videos
@@ -202,28 +202,28 @@ function UserPanel() {
         {section === 'all' && (
           <div className="space-y-8">
             {/* Page Header */}
-            <div className="border-b border-gray-700 pb-8">
-              <h1 className="text-3xl font-bold text-cyan-400">All Products</h1>
-              <p className="mt-2 text-gray-300">Browse our complete collection of premium BGMI accounts</p>
+            <div className="border-b border-gray-200 pb-8">
+              <h1 className="text-3xl font-bold text-blue-600">All Products</h1>
+              <p className="mt-2 text-gray-600">Browse our complete collection of premium BGMI accounts</p>
             </div>
 
             {/* Filters */}
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 shadow-lg">
+            <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Search</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
                   <input
                     type="text"
                     placeholder="Search products..."
-                    className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                   <select
-                    className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                     value={status}
                     onChange={e => setStatus(e.target.value)}
                   >
@@ -233,27 +233,27 @@ function UserPanel() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Price Range</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
                   <div className="flex items-center space-x-2">
                     <input
                       type="number"
                       placeholder="Min"
-                      className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                       value={price[0]}
                       onChange={e => setPrice([+e.target.value, price[1]])}
                     />
-                    <span className="text-gray-400">-</span>
+                    <span className="text-gray-500">-</span>
                     <input
                       type="number"
                       placeholder="Max"
-                      className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                       value={price[1]}
                       onChange={e => setPrice([price[0], +e.target.value])}
                     />
                   </div>
                 </div>
                 <div className="flex items-end">
-                  <button className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-gray-900 px-4 py-2 rounded-md hover:from-cyan-500 hover:to-blue-600 transition-all duration-200 font-medium">
+                  <button className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 py-2 rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 font-medium shadow-lg hover:shadow-blue-400/25">
                     Apply Filters
                   </button>
                 </div>
@@ -267,9 +267,9 @@ function UserPanel() {
 
         {section === 'videos' && (
           <div className="space-y-8">
-            <div className="border-b border-gray-700 pb-8">
-              <h1 className="text-3xl font-bold text-cyan-400">YouTube Videos</h1>
-              <p className="mt-2 text-gray-300">Watch gameplay and tutorials</p>
+            <div className="border-b border-gray-200 pb-8">
+              <h1 className="text-3xl font-bold text-blue-600">YouTube Videos</h1>
+              <p className="mt-2 text-gray-600">Watch gameplay and tutorials</p>
             </div>
             <YouTubeVideoGallery />
           </div>

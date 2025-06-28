@@ -26,10 +26,10 @@ export default function SubAdminActivity() {
   }, []);
 
   if (loading) {
-    return <div className="text-cyan-400 text-center py-12 font-bold animate-pulse">Loading subadmin activity...</div>;
+    return <div className="text-blue-600 text-center py-12 font-bold animate-pulse">Loading subadmin activity...</div>;
   }
   if (error) {
-    return <div className="text-red-400 text-center py-12 font-bold">{error}</div>;
+    return <div className="text-red-600 text-center py-12 font-bold">{error}</div>;
   }
 
   // Group posted IDs by subadmin
@@ -41,12 +41,12 @@ export default function SubAdminActivity() {
       <Card
         key={sub._id}
         header={
-          <span className="text-cyan-400 font-bold text-lg neon-text ml-4">
+          <span className="text-blue-600 font-bold text-lg ml-4">
             {sub.username || sub.name}{' '}
-            <span className="text-xs text-gray-400 font-normal">({sub.email})</span>
+            <span className="text-xs text-gray-500 font-normal">({sub.email})</span>
           </span>
         }
-        className="bg-gray-900 border border-cyan-700 mb-8"
+        className="bg-white border border-gray-200 mb-8"
       >
         <Table className='m-4'
           columns={[
@@ -63,13 +63,13 @@ export default function SubAdminActivity() {
                         key={i}
                         src={m.url.startsWith('http') ? m.url : `https://swarg-store-backend.onrender.com${m.url}`}
                         alt="media"
-                        className="w-12 h-12 rounded-lg object-cover border-2 border-gray-700 shadow hover:border-cyan-400 transition-colors"
+                        className="w-12 h-12 rounded-lg object-cover border-2 border-gray-300 shadow hover:border-blue-400 transition-colors"
                       />
                     ) : (
                       <video
                         key={i}
                         src={m.url.startsWith('http') ? m.url : `https://swarg-store-backend.onrender.com${m.url}`}
-                        className="w-12 h-12 rounded-lg border-2 border-gray-700 shadow"
+                        className="w-12 h-12 rounded-lg border-2 border-gray-300 shadow"
                         controls
                       />
                     )
@@ -80,7 +80,7 @@ export default function SubAdminActivity() {
             {
               label: 'Price',
               accessor: 'price',
-              render: (row) => <span className="text-green-400 font-bold">₹{row.price}</span>,
+              render: (row) => <span className="text-green-600 font-bold">₹{row.price}</span>,
             },
             {
               label: 'Status',
@@ -89,8 +89,8 @@ export default function SubAdminActivity() {
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg border-2 ${
                     row.status === 'sold' || row.status === 'sold out'
-                      ? 'bg-red-900/60 text-red-300 border-red-600'
-                      : 'bg-green-900/60 text-green-300 border-green-600'
+                      ? 'bg-red-100 text-red-700 border-red-300'
+                      : 'bg-green-100 text-green-700 border-green-300'
                   }`}
                 >
                   {row.status === 'sold' || row.status === 'sold out' ? 'Sold' : 'Available'}
@@ -101,7 +101,7 @@ export default function SubAdminActivity() {
           data={games}
         />
         {games.length === 0 && (
-          <div className="text-gray-400 text-center py-4">No posted IDs for this subadmin.</div>
+          <div className="text-gray-500 text-center py-4">No posted IDs for this subadmin.</div>
         )}
       </Card>
     );

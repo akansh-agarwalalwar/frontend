@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 const adminNavItems = [
-  { key: 'subadmins', label: 'Sub Admins', icon: '👥' },
-  { key: 'create', label: "Create ID's", icon: '➕' },
+  // { key: 'subadmins', label: 'Sub Admins', icon: '👥' },
   { key: 'all', label: 'All Posted IDs', icon: '📋' },
+  { key: 'create', label: "Create ID's", icon: '➕' },
   { key: 'manageSubadmins', label: 'Manage Subadmins', icon: '🛠️' },
   { key: 'myPosted', label: 'My Posted IDs', icon: '🗂️' },
   { key: 'telegram', label: 'Telegram Link', icon: '📢' },
@@ -19,7 +19,7 @@ const userNavItems = [
 const subAdminNavItems = [
   { key: 'all', label: 'Home', icon: '🏠' },
   { key: 'bgmi', label: 'Add BGMI', icon: '🛒' },
-  { key: 'valo', label: 'Add Valorent', icon: '🛒' },
+  // { key: 'valo', label: 'Add Valorent', icon: '🛒' },
   { key: 'telegram', label: 'Telegram Link', icon: '📢' },
   { key: 'youtube', label: 'YouTube Videos', icon: '🎥' },
 ];
