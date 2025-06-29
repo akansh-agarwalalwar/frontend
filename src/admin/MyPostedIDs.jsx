@@ -11,7 +11,7 @@ export default function MyPostedIDs() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:5000/api/ids/my', {
+    fetch('https://swarg-store-backend.onrender.com/api/ids/my', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -22,7 +22,7 @@ export default function MyPostedIDs() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/ids/${id}/status`, {
+      const res = await fetch(`https://swarg-store-backend.onrender.com/api/ids/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export default function MyPostedIDs() {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/ids/${id}`, {
+      const res = await fetch(`https://swarg-store-backend.onrender.com/api/ids/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -70,13 +70,13 @@ export default function MyPostedIDs() {
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-blue-50 group-hover:opacity-90 transition-opacity relative">
                 {row.media && row.media.length > 0 && row.media[0]?.type === 'image' ? (
                   <img 
-                    src={`http://localhost:5000${row.media[0].url}`} 
+                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
                     alt={row.title}
                     className="h-48 w-full object-cover object-center" 
                   />
                 ) : row.media && row.media.length > 0 && row.media[0]?.type === 'video' ? (
                   <video 
-                    src={`http://localhost:5000${row.media[0].url}`} 
+                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
                     className="h-48 w-full object-cover object-center" 
                     controls 
                   />

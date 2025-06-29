@@ -54,13 +54,13 @@ export default function ProductModal({ product, isOpen, onClose }) {
                   <>
                     {product.media[currentImageIndex]?.type === 'image' ? (
                       <img
-                        src={`http://localhost:5000${product.media[currentImageIndex].url}`}
+                        src={`https://swarg-store-backend.onrender.com${product.media[currentImageIndex].url}`}
                         alt={product.title}
                         className="w-full h-full object-contain bg-gray-800"
                       />
                     ) : (
                       <video
-                        src={`http://localhost:5000${product.media[currentImageIndex].url}`}
+                        src={`https://swarg-store-backend.onrender.com${product.media[currentImageIndex].url}`}
                         className="w-full h-full object-contain bg-gray-800"
                         controls
                         autoPlay
@@ -117,7 +117,7 @@ export default function ProductModal({ product, isOpen, onClose }) {
                       >
                         {media.type === 'image' ? (
                           <img
-                            src={`http://localhost:5000${media.url}`}
+                            src={`https://swarg-store-backend.onrender.com${media.url}`}
                             alt={`Media ${index + 1}`}
                             className="w-full h-full object-cover"
                           />

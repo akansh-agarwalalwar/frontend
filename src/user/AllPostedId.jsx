@@ -9,7 +9,7 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
 
   useEffect(() => {
     // console.log('Component mounted');
-    fetch('http://localhost:5000/api/ids')
+    fetch('https://swarg-store-backend.onrender.com/api/ids')
       .then(res => res.json())
       .then(data => {
         console.log('Fetched data:', data);
@@ -80,13 +80,13 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-700 group-hover:opacity-95 transition-opacity duration-300">
                 {row.media && row.media.length > 0 && row.media[0]?.type === 'image' ? (
                   <img 
-                    src={`http://localhost:5000${row.media[0].url}`} 
+                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
                     alt={row.title}
                     className="h-48 w-full object-cover object-center group-hover:scale-105 transition-transform duration-300" 
                   />
                 ) : row.media && row.media.length > 0 && row.media[0]?.type === 'video' ? (
                   <video 
-                    src={`http://localhost:5000${row.media[0].url}`} 
+                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
                     className="h-48 w-full object-cover object-center group-hover:scale-105 transition-transform duration-300" 
                     controls 
                   />
@@ -131,7 +131,7 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
                       m.type === 'image' ? (
                         <img
                           key={idx}
-                          src={`http://localhost:5000${m.url}`}
+                          src={`https://swarg-store-backend.onrender.com${m.url}`}
                           alt="media"
                           className="w-8 h-8 rounded object-cover border border-gray-300 hover:border-blue-400 hover:scale-110 transition-all duration-200"
                         />

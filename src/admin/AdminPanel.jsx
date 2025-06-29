@@ -81,7 +81,7 @@ function AdminPanel() {
     });
 
     try {
-      const res = await fetch('http://localhost:5000/api/ids/create', {
+      const res = await fetch('https://swarg-store-backend.onrender.com/api/ids/create', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
