@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import SubAdminActivity from './SubAdminActivity';
 import AllPostedIDs from './AllPostedIDs';
+import SoldIDs from './SoldIDs';
 import Card from '../components/Card';
 import ManageSubadmins from './ManageSubadmins';
 import MyPostedIDs from './MyPostedIDs';
@@ -12,6 +13,7 @@ import MediaUpload from '../components/MediaUpload';
 
 function AdminPanel() {
   const [section, setSection] = useState('all');
+  const [search, setSearch] = useState('');
   const navigate = useNavigate();
   // Dummy data for sub admins
   const [subAdmins, setSubAdmins] = useState([
@@ -115,6 +117,27 @@ function AdminPanel() {
             Logout
           </button>
         </div>
+        
+        {/* Search Bar for relevant sections */}
+        {(section === 'all' || section === 'sold' || section === 'myPosted') && (
+          <div className="mb-6">
+            <div className="relative max-w-md mx-auto">
+              <input
+                type="text"
+                placeholder="Search by title or seller..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full px-4 py-2 pl-10 border border-blue-200 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        )}
+
         {section === 'subadmins' && <SubAdminActivity />}
         {section === 'create' && (
           <Card header={<span className="text-blue-600">Create BGMI ID to Sell</span>} className="max-w-4xl mx-auto p-8">
@@ -173,7 +196,7 @@ function AdminPanel() {
             </form>
           </Card>
         )}
-        {section === 'all' && <AllPostedIDs />}
+        {section === 'all' && <AllPostedIDs search={search} />}
         {section === 'manageSubadmins' && (
           <ManageSubadmins
             subAdmins={subAdmins}
@@ -184,9 +207,10 @@ function AdminPanel() {
             deleteSubAdmin={deleteSubAdmin}
           />
         )}
-        {section === 'myPosted' && <MyPostedIDs />}
+        {section === 'myPosted' && <MyPostedIDs search={search} />}
         {section === 'youtube' && <YouTubeVideos mode="admin" />}
         {section === 'telegram' && <TelegramLinkCard panelMode="admin" />}
+        {section === 'sold' && <SoldIDs search={search} />}
       </div>
     </div>
   );

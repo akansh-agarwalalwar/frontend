@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 const bgmiPlaceholderImage = "https://prod.assets.earlygamecdn.com/images/BGMI-3.5-Update.png?transform=Article+Webp";
 
-export default function MyPostedIDs() {
+export default function MyPostedIDs({ search = '' }) {
   const [myIDs, setMyIDs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -54,17 +54,25 @@ export default function MyPostedIDs() {
     }
   };
 
+  const filtered = myIDs.filter(
+    (id) =>
+      id.title.toLowerCase().includes(search.toLowerCase()) ||
+      (id.postedBy?.username || '').toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="mb-8">
       <h2 className="text-2xl font-bold text-cyan-400 mb-8 neon-text">My Posted IDs</h2>
       {error && <div className="text-red-400 text-center mb-4">{error}</div>}
       {loading ? (
         <div className="text-center text-blue-500 py-12 font-bold animate-pulse">Loading...</div>
-      ) : myIDs.length === 0 ? (
-        <div className="text-center text-gray-500 py-12">You have not posted any IDs yet.</div>
+      ) : filtered.length === 0 ? (
+        <div className="text-center text-gray-500 py-12">
+          {search ? 'No IDs found matching your search.' : 'You have not posted any IDs yet.'}
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {myIDs.map((row) => (
+          {filtered.map((row) => (
             <div key={row._id} className="group relative bg-white rounded-lg shadow-lg border border-blue-100 hover:shadow-2xl hover:shadow-blue-400/20 transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
               {/* Product Image */}
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-blue-50 group-hover:opacity-90 transition-opacity relative">

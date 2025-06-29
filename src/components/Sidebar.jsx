@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const adminNavItems = [
   // { key: 'subadmins', label: 'Sub Admins', icon: '👥' },
   { key: 'all', label: 'All Posted IDs', icon: '📋' },
+  { key: 'sold', label: 'Sold IDs', icon: '💰' },
   { key: 'create', label: "Create ID's", icon: '➕' },
   { key: 'manageSubadmins', label: 'Manage Subadmins', icon: '🛠️' },
   { key: 'myPosted', label: 'My Posted IDs', icon: '🗂️' },
