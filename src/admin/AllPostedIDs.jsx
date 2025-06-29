@@ -135,7 +135,7 @@ export default function AllPostedIDs({ search = '' }) {
                   <span className="font-medium text-gray-700">Seller:</span> {postedByName} ({row.role})
                 </div>
                 {/* Additional Media Thumbnails */}
-                {row.media && row.media.length > 1 && (
+                {/* {row.media && row.media.length > 1 && (
                   <div className="flex gap-1 mb-4">
                     {row.media.slice(1, 4).map((m, idx) =>
                       m.type === 'image' ? (
@@ -162,7 +162,7 @@ export default function AllPostedIDs({ search = '' }) {
                       </div>
                     )}
                   </div>
-                )}
+                )} */}
                 {/* Action Button */}
                 <button
                   className={`w-full py-2 px-4 rounded-md text-sm font-bold transition-all duration-200 transform hover:scale-105 ${

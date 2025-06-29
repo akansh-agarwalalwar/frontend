@@ -9,7 +9,7 @@ export default function AllPostedIDs() {
   const fetchPostedIDs = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch('https://swarg-store-backend.onrender.com/api/ids/get-my-posted', {  // Adjust endpoint to your API
+      const res = await fetch('https://swarg-store-backend.onrender.com/api/ids/my', {  // Adjust endpoint to your API
         headers: {
           Authorization: `Bearer ${token}`,
         },

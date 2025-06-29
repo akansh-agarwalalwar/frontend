@@ -105,7 +105,7 @@ function AdminPanel() {
 
   return (
     <div className="flex h-screen gap-8 bg-white">
-      <Sidebar current={section} onSectionChange={setSection} />
+      <Sidebar current={section} onSectionChange={setSection} mode="admin" />
       <div className="flex-1 py-8 overflow-y-auto p-4 bg-white">
         <div className="flex justify-end mb-6">
           <button
