@@ -12,10 +12,10 @@ export default function SubAdminActivity() {
     setLoading(true);
     setError('');
     Promise.all([
-      fetch('https://swarg-store-backend.onrender.com/api/subadmin/get-all', {
+      fetch('http://localhost:5000/api/subadmin/get-all', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       }).then(res => res.json()),
-      fetch('https://swarg-store-backend.onrender.com/api/ids').then(res => res.json()),
+      fetch('http://localhost:5000/api/ids').then(res => res.json()),
     ])
       .then(([subadminsRes, postedIDsRes]) => {
         setSubadmins(Array.isArray(subadminsRes) ? subadminsRes : []);
@@ -61,14 +61,14 @@ export default function SubAdminActivity() {
                     m.type === 'image' ? (
                       <img
                         key={i}
-                        src={m.url.startsWith('http') ? m.url : `https://swarg-store-backend.onrender.com${m.url}`}
+                        src={m.url.startsWith('http') ? m.url : `http://localhost:5000${m.url}`}
                         alt="media"
                         className="w-12 h-12 rounded-lg object-cover border-2 border-gray-300 shadow hover:border-blue-400 transition-colors"
                       />
                     ) : (
                       <video
                         key={i}
-                        src={m.url.startsWith('http') ? m.url : `https://swarg-store-backend.onrender.com${m.url}`}
+                        src={m.url.startsWith('http') ? m.url : `http://localhost:5000${m.url}`}
                         className="w-12 h-12 rounded-lg border-2 border-gray-300 shadow"
                         controls
                       />

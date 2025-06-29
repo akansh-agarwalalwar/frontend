@@ -9,7 +9,7 @@ export default function AllPostedIDs({ search = '' }) {
 
   useEffect(() => {
     setLoading(true);
-    fetch('https://swarg-store-backend.onrender.com/api/ids')
+    fetch('http://localhost:5000/api/ids')
       .then(res => res.json())
       .then(data => setAllIDs(Array.isArray(data) ? data : []))
       .catch(() => setError('Failed to load IDs'))
@@ -19,7 +19,7 @@ export default function AllPostedIDs({ search = '' }) {
   const handleToggleStatus = async (id, currentStatus) => {
     try {
       const newStatus = currentStatus === 'sold' ? 'available' : 'sold';
-      const res = await fetch(`https://swarg-store-backend.onrender.com/api/ids/${id}/status`, {
+      const res = await fetch(`http://localhost:5000/api/ids/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export default function AllPostedIDs({ search = '' }) {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`https://swarg-store-backend.onrender.com/api/ids/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/ids/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,13 +84,13 @@ export default function AllPostedIDs({ search = '' }) {
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-100 group-hover:opacity-90 transition-opacity relative">
                 {row.media && row.media.length > 0 && row.media[0]?.type === 'image' ? (
                   <img 
-                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
+                    src={`http://localhost:5000${row.media[0].url}`} 
                     alt={row.title}
                     className="h-48 w-full object-cover object-center" 
                   />
                 ) : row.media && row.media.length > 0 && row.media[0]?.type === 'video' ? (
                   <video 
-                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
+                    src={`http://localhost:5000${row.media[0].url}`} 
                     className="h-48 w-full object-cover object-center" 
                     controls 
                   />
@@ -141,7 +141,7 @@ export default function AllPostedIDs({ search = '' }) {
                       m.type === 'image' ? (
                         <img
                           key={idx}
-                          src={`https://swarg-store-backend.onrender.com${m.url}`}
+                          src={`http://localhost:5000${m.url}`}
                           alt="media"
                           className="w-8 h-8 rounded object-cover border border-gray-300 hover:border-blue-400 transition-colors"
                         />

@@ -11,7 +11,7 @@ function UserPanel() {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('all');
   const [role, setRole] = useState('all');
-  const [price, setPrice] = useState([0, 2000]);
+  const [price, setPrice] = useState([0, 10000000]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (

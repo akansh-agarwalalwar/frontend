@@ -8,6 +8,7 @@ import ManageSubadmins from './ManageSubadmins';
 import MyPostedIDs from './MyPostedIDs';
 import YouTubeVideos from '../components/YouTubeVideos';
 import TelegramLinkCard from '../components/TelegramLinkCard';
+import MediaUpload from '../components/MediaUpload';
 
 function AdminPanel() {
   const [section, setSection] = useState('all');
@@ -18,7 +19,12 @@ function AdminPanel() {
     { id: 2, username: 'subadmin2', name: 'Sub Admin 2', email: 'sub2@example.com' },
   ]);
   const [newSubAdmin, setNewSubAdmin] = useState({ username: '', name: '', email: '', password: '' });
-  const [bgmiForm, setBgmiForm] = useState({ title: '', price: '', description: '', media: null });
+  const [bgmiForm, setBgmiForm] = useState({ 
+    title: '', 
+    price: '', 
+    description: '', 
+    media: [] 
+  });
 
   // CRUD handlers for sub admins
   const addSubAdmin = () => {
@@ -30,10 +36,18 @@ function AdminPanel() {
 
   // BGMI ID form handler
   const handleBgmiChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
     setBgmiForm(prev => ({
       ...prev,
-      [name]: files ? files[0] : value
+      [name]: value
+    }));
+  };
+
+  // Media files handler
+  const handleMediaChange = (files) => {
+    setBgmiForm(prev => ({
+      ...prev,
+      media: files
     }));
   };
 
@@ -41,26 +55,33 @@ function AdminPanel() {
   const handleBgmiSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    if (!bgmiForm.title || !bgmiForm.price || !bgmiForm.media) {
-      alert('Title, price, and media are required.');
+    
+    if (!bgmiForm.title || !bgmiForm.price) {
+      alert('Title and price are required.');
       return;
     }
+    
+    if (bgmiForm.media.length === 0) {
+      alert('Please upload at least one media file.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('title', bgmiForm.title);
     formData.append('price', bgmiForm.price);
     formData.append('description', bgmiForm.description);
-    if (bgmiForm.media) {
-      if (bgmiForm.media.type && bgmiForm.media.type.startsWith('image/')) {
-        formData.append('image', bgmiForm.media);
-      } else if (bgmiForm.media.type && bgmiForm.media.type.startsWith('video/')) {
-        formData.append('video', bgmiForm.media);
-      } else {
-        alert('Unsupported media file type');
-        return;
+    
+    // Append all media files
+    bgmiForm.media.forEach(file => {
+      if (file.type.startsWith('image/')) {
+        formData.append('image', file);
+      } else if (file.type.startsWith('video/')) {
+        formData.append('video', file);
       }
-    }
+    });
+
     try {
-      const res = await fetch('https://swarg-store-backend.onrender.com/api/ids/create', {
+      const res = await fetch('http://localhost:5000/api/ids/create', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -70,7 +91,7 @@ function AdminPanel() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to create BGMI ID');
       alert('BGMI ID created successfully!');
-      setBgmiForm({ title: '', price: '', description: '', media: null });
+      setBgmiForm({ title: '', price: '', description: '', media: [] });
     } catch (err) {
       alert(err.message);
     }
@@ -96,25 +117,59 @@ function AdminPanel() {
         </div>
         {section === 'subadmins' && <SubAdminActivity />}
         {section === 'create' && (
-          <Card header={<span className="text-blue-600">Create BGMI ID to Sell</span>} className="max-w-2xl mx-auto p-8">
+          <Card header={<span className="text-blue-600">Create BGMI ID to Sell</span>} className="max-w-4xl mx-auto p-8">
             <form className="space-y-6" onSubmit={handleBgmiSubmit} encType="multipart/form-data">
-              <div>
-                <label className="block text-gray-700 font-semibold mb-1">Title</label>
-                <input type="text" name="title" placeholder="Title" className="w-full border border-blue-200 rounded px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition" value={bgmiForm.title} onChange={handleBgmiChange} />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-1">Price</label>
-                <input type="number" name="price" placeholder="Price" className="w-full border border-blue-200 rounded px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition" value={bgmiForm.price} onChange={handleBgmiChange} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">Title</label>
+                  <input 
+                    type="text" 
+                    name="title" 
+                    placeholder="Enter product title" 
+                    className="w-full border border-blue-200 rounded px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition" 
+                    value={bgmiForm.title} 
+                    onChange={handleBgmiChange} 
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">Price</label>
+                  <input 
+                    type="number" 
+                    name="price" 
+                    placeholder="Enter price" 
+                    className="w-full border border-blue-200 rounded px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition" 
+                    value={bgmiForm.price} 
+                    onChange={handleBgmiChange} 
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-gray-700 font-semibold mb-1">Description</label>
-                <textarea name="description" placeholder="Description" className="w-full border border-blue-200 rounded px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition" value={bgmiForm.description} onChange={handleBgmiChange} />
+                <textarea 
+                  name="description" 
+                  placeholder="Enter product description" 
+                  className="w-full border border-blue-200 rounded px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition" 
+                  value={bgmiForm.description} 
+                  onChange={handleBgmiChange}
+                  rows={4}
+                />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">Photo/Video</label>
-                <input type="file" name="media" accept="image/*,video/*" className="w-full border border-blue-200 rounded px-3 py-2 bg-white text-gray-900" onChange={handleBgmiChange} />
+                <label className="block text-gray-700 font-semibold mb-1">Media Files</label>
+                <MediaUpload 
+                  onFilesChange={handleMediaChange}
+                  maxFiles={10}
+                  acceptedTypes="image/*,video/*"
+                />
               </div>
-              <button type="submit" className="w-full bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:from-blue-500 hover:to-blue-700 hover:scale-105 transition text-lg gaming-button">Create</button>
+              <button 
+                type="submit" 
+                className="w-full bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:from-blue-500 hover:to-blue-700 hover:scale-105 transition text-lg gaming-button"
+              >
+                Create BGMI ID
+              </button>
             </form>
           </Card>
         )}

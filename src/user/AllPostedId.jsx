@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import Card from '../components/Card';
+import ProductModal from '../components/ProductModal';
 
-export default function AllPostedIDs({ search = '', status = 'all', role = 'all', price = [0, 2000] }) {
+export default function AllPostedIDs({ search = '', status = 'all', role = 'all', price = [0, 10000000] }) {
   const [allIDs, setAllIDs] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    console.log('Component mounted');
-    fetch('https://swarg-store-backend.onrender.com/api/ids')
+    // console.log('Component mounted');
+    fetch('http://localhost:5000/api/ids')
       .then(res => res.json())
       .then(data => {
         console.log('Fetched data:', data);
@@ -16,6 +19,16 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
         console.error('Fetch error:', error);
       });
   }, []);
+
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
 
   const filtered = allIDs.filter(id => {
     // postedBy might be an object if populated or just string id
@@ -58,18 +71,22 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
           const postedByName = row.postedBy?.username || 'Unknown';
 
           return (
-            <div key={row._id} className="group relative bg-white rounded-lg shadow-lg border border-blue-100 hover:shadow-xl hover:shadow-blue-200/50 transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
+            <div 
+              key={row._id} 
+              className="group relative bg-white rounded-lg shadow-lg border border-blue-100 hover:shadow-xl hover:shadow-blue-200/50 transition-all duration-300 overflow-hidden transform hover:-translate-y-1 cursor-pointer"
+              onClick={() => handleProductClick(row)}
+            >
               {/* Product Image */}
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-700 group-hover:opacity-95 transition-opacity duration-300">
                 {row.media && row.media.length > 0 && row.media[0]?.type === 'image' ? (
                   <img 
-                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
+                    src={`http://localhost:5000${row.media[0].url}`} 
                     alt={row.title}
                     className="h-48 w-full object-cover object-center group-hover:scale-105 transition-transform duration-300" 
                   />
                 ) : row.media && row.media.length > 0 && row.media[0]?.type === 'video' ? (
                   <video 
-                    src={`https://swarg-store-backend.onrender.com${row.media[0].url}`} 
+                    src={`http://localhost:5000${row.media[0].url}`} 
                     className="h-48 w-full object-cover object-center group-hover:scale-105 transition-transform duration-300" 
                     controls 
                   />
@@ -107,14 +124,14 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
                   <span className="font-medium text-gray-300">Seller:</span> {postedByName}
                 </div>
 
-                {/* Additional Media Thumbnails */}
+                {/* Additional Media Thumbnails
                 {row.media && row.media.length > 1 && (
                   <div className="flex gap-1 mb-4">
                     {row.media.slice(1, 4).map((m, idx) =>
                       m.type === 'image' ? (
                         <img
                           key={idx}
-                          src={`https://swarg-store-backend.onrender.com${m.url}`}
+                          src={`http://localhost:5000${m.url}`}
                           alt="media"
                           className="w-8 h-8 rounded object-cover border border-gray-300 hover:border-blue-400 hover:scale-110 transition-all duration-200"
                         />
@@ -135,7 +152,7 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
                       </div>
                     )}
                   </div>
-                )}
+                )} */}
 
                 {/* Action Button */}
                 <button
@@ -148,13 +165,6 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('=== BUTTON CLICKED ===');
-                    console.log('Button clicked!', { 
-                      status: row.status, 
-                      telegramLink: row.telegramLink,
-                      title: row.title,
-                      id: row._id 
-                    });
                     if (row.status !== 'sold' && row.status !== 'sold out') {
                       if (row.telegramLink) {
                         window.open(row.telegramLink, '_blank');
@@ -165,7 +175,6 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
                   }}
                   onMouseDown={(e) => {
                     e.preventDefault();
-                    console.log('=== BUTTON PRESSED ===');
                   }}
                 >
                   {row.status === 'sold' || row.status === 'sold out' ? 'Sold Out' : 'Buy Now'}
@@ -175,6 +184,13 @@ export default function AllPostedIDs({ search = '', status = 'all', role = 'all'
           );
         })}
       </div>
+
+      {/* Product Modal */}
+      <ProductModal 
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      />
     </div>
   );
 }

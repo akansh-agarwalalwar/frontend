@@ -13,7 +13,7 @@ export default function YouTubeVideoGallery() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('https://swarg-store-backend.onrender.com/api/youtube-videos')
+    fetch('http://localhost:5000/api/youtube-videos')
       .then(res => res.json())
       .then(data => {
         setLinks(Array.isArray(data) ? data : []);

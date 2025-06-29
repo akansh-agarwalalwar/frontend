@@ -4,6 +4,7 @@ import AdminPanel from './admin/AdminPanel'
 import SubAdminPanel from './subadmin/SubAdminPanel'
 import UserPanel from './user/UserPanel'
 import AuthForm from './components/AuthForm'
+import ScrollToTop from './components/ScrollToTop'
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -105,6 +106,7 @@ export default function App() {
     <ErrorBoundary>
       <Router>
         <TokenExpiryWatcher />
+        <ScrollToTop />
         <Routes>
           <Route path="/admin" element={
             <PrivateRoute role="admin">

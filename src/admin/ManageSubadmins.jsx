@@ -11,7 +11,7 @@ export default function ManageSubadmins() {
   const fetchSubAdmins = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch('https://swarg-store-backend.onrender.com/api/subadmin/get-all', {
+      const res = await fetch('http://localhost:5000/api/subadmin/get-all', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,7 +32,7 @@ export default function ManageSubadmins() {
   const deleteSubAdmin = async (id) => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`https://swarg-store-backend.onrender.com/api/subadmin/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/subadmin/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

@@ -12,6 +12,28 @@ export default function TelegramLinkCard({ panelMode }) {
   const token = localStorage.getItem('token');
   const role = panelMode === 'admin' ? 'admin' : 'subadmin';
 
+  // Helper function to format telegram link
+  const formatTelegramLink = (input) => {
+    if (!input) return '';
+    
+    // Remove any existing https://t.me/ prefix
+    let username = input.replace(/^https?:\/\/t\.me\//, '').replace(/^@/, '');
+    
+    // If it's already a full URL, return as is
+    if (input.startsWith('http://') || input.startsWith('https://')) {
+      return input;
+    }
+    
+    // Add the prefix
+    return `https://t.me/${username}`;
+  };
+
+  // Handle input change with automatic formatting
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setInput(value);
+  };
+
   // Fetch subadmin's telegram link
   const fetchSubAdminLink = async () => {
     if (role !== 'subadmin') return;
@@ -38,7 +60,9 @@ export default function TelegramLinkCard({ panelMode }) {
       
       const data = await res.json();
       setCurrentLink(data);
-      setInput(data.link || '');
+      // Show only username in input (without prefix)
+      const username = data.link?.replace(/^https?:\/\/t\.me\//, '') || '';
+      setInput(username);
     } catch (err) {
       if (err.message !== 'Telegram link not found for this subadmin') {
         setError(err.message);
@@ -83,13 +107,20 @@ export default function TelegramLinkCard({ panelMode }) {
     setMessage('');
     
     try {
+      const formattedLink = formatTelegramLink(input);
+      if (!formattedLink) {
+        setError('Please enter a valid username');
+        setLoading(false);
+        return;
+      }
+
       const res = await fetch('https://swarg-store-backend.onrender.com/api/telegram-links/subadmin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ link: input }),
+        body: JSON.stringify({ link: formattedLink }),
       });
       
       const data = await res.json();
@@ -115,6 +146,13 @@ export default function TelegramLinkCard({ panelMode }) {
     setMessage('');
     
     try {
+      const formattedLink = formatTelegramLink(input);
+      if (!formattedLink) {
+        setError('Please enter a valid username');
+        setLoading(false);
+        return;
+      }
+
       let res, data;
       
       if (editingLinkId) {
@@ -125,7 +163,7 @@ export default function TelegramLinkCard({ panelMode }) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ link: input }),
+          body: JSON.stringify({ link: formattedLink }),
         });
         data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed to update telegram link');
@@ -138,7 +176,7 @@ export default function TelegramLinkCard({ panelMode }) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ link: input }),
+          body: JSON.stringify({ link: formattedLink }),
         });
         data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed to create telegram link');
@@ -229,20 +267,23 @@ export default function TelegramLinkCard({ panelMode }) {
   // Start editing
   const handleEdit = () => {
     setIsEditing(true);
-    setInput(currentLink?.link || '');
+    const username = currentLink?.link?.replace(/^https?:\/\/t\.me\//, '') || '';
+    setInput(username);
   };
 
   // Admin edit operation
   const handleAdminEdit = (link) => {
     setIsEditing(true);
     setEditingLinkId(link._id);
-    setInput(link.link);
+    const username = link.link?.replace(/^https?:\/\/t\.me\//, '') || '';
+    setInput(username);
   };
 
   // Cancel editing
   const handleCancel = () => {
     setIsEditing(false);
-    setInput(currentLink?.link || '');
+    const username = currentLink?.link?.replace(/^https?:\/\/t\.me\//, '') || '';
+    setInput(username);
     setEditingLinkId(null);
     setError('');
   };
@@ -318,13 +359,21 @@ export default function TelegramLinkCard({ panelMode }) {
             </div>
           ) : (
             <div className="space-y-4">
-              <input
-                type="url"
-                placeholder="https://t.me/yourusername"
-                className="w-full px-4 py-2 rounded-md border-2 border-blue-200 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span className="text-gray-500 text-sm">https://t.me/</span>
+                </div>
+                <input
+                  type="text"
+                  placeholder="yourusername"
+                  className="w-full pl-24 pr-4 py-2 rounded-md border-2 border-blue-200 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition"
+                  value={input}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="text-xs text-gray-500">
+                Just enter your username (e.g., "john_doe" or "@john_doe")
+              </div>
               <div className="flex gap-2">
                 <button
                   className="flex-1 px-4 py-2 rounded-md bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold shadow hover:from-blue-500 hover:to-blue-700 transition"
@@ -354,13 +403,21 @@ export default function TelegramLinkCard({ panelMode }) {
               <h3 className="text-lg font-semibold text-gray-700 mb-3">
                 {editingLinkId ? 'Edit Telegram Link' : 'Add New Telegram Link'}
               </h3>
-              <input
-                type="url"
-                placeholder="https://t.me/username"
-                className="w-full px-4 py-2 rounded-md border-2 border-blue-200 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition mb-3"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-              />
+              <div className="relative mb-3">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span className="text-gray-500 text-sm">https://t.me/</span>
+                </div>
+                <input
+                  type="text"
+                  placeholder="username"
+                  className="w-full pl-24 pr-4 py-2 rounded-md border-2 border-blue-200 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition"
+                  value={input}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="text-xs text-gray-500 mb-3">
+                Just enter the username (e.g., "john_doe" or "@john_doe")
+              </div>
               <div className="flex gap-2">
                 <button
                   className="flex-1 px-4 py-2 rounded-md bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold shadow hover:from-blue-500 hover:to-blue-700 transition"
@@ -448,22 +505,15 @@ export default function TelegramLinkCard({ panelMode }) {
         </div>
       )}
 
-      {error && (
-        <div className="text-red-500 font-semibold text-sm mt-4 p-3 bg-red-50 rounded border border-red-200">
-          {error}
-        </div>
-      )}
-      
+      {/* Messages */}
       {message && (
-        <div className="text-green-600 font-semibold text-sm mt-4 p-3 bg-green-50 rounded border border-green-200">
+        <div className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
           {message}
         </div>
       )}
-
-      {loading && (
-        <div className="text-center py-4">
-          <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-          <span className="ml-2 text-gray-600">Loading...</span>
+      {error && (
+        <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          {error}
         </div>
       )}
     </Card>

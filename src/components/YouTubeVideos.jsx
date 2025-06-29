@@ -12,7 +12,7 @@ export default function YouTubeVideos({ mode }) {
 
   // Fetch all videos on mount
   useEffect(() => {
-    fetch('https://swarg-store-backend.onrender.com/api/youtube-videos')
+    fetch('http://localhost:5000/api/youtube-videos')
       .then(res => res.json())
       .then(data => setLinks(Array.isArray(data) ? data : []))
       .catch(() => setLinks([]));
@@ -34,7 +34,7 @@ export default function YouTubeVideos({ mode }) {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('https://swarg-store-backend.onrender.com/api/youtube-videos', {
+      const res = await fetch('http://localhost:5000/api/youtube-videos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export default function YouTubeVideos({ mode }) {
     if (!video || !video._id) return setError('Invalid video');
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`https://swarg-store-backend.onrender.com/api/youtube-videos/${video._id}`, {
+      const res = await fetch(`http://localhost:5000/api/youtube-videos/${video._id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
