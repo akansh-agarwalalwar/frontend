@@ -27,6 +27,7 @@ function AdminPanel() {
     description: '', 
     media: [] 
   });
+  const [resetKey, setResetKey] = useState(0);
 
   // CRUD handlers for sub admins
   const addSubAdmin = () => {
@@ -94,6 +95,8 @@ function AdminPanel() {
       if (!res.ok) throw new Error(data.message || 'Failed to create BGMI ID');
       alert('BGMI ID created successfully!');
       setBgmiForm({ title: '', price: '', description: '', media: [] });
+      setResetKey(prev => prev + 1);
+      window.location.reload();
     } catch (err) {
       alert(err.message);
     }
@@ -185,6 +188,7 @@ function AdminPanel() {
                   onFilesChange={handleMediaChange}
                   maxFiles={10}
                   acceptedTypes="image/*,video/*"
+                  resetKey={resetKey}
                 />
               </div>
               <button 

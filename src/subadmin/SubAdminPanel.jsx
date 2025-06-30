@@ -18,6 +18,7 @@ function SubAdminPanel() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -90,6 +91,8 @@ function SubAdminPanel() {
 
       setSuccess('BGMI ID posted successfully!');
       setBgmiForm({ title: '', price: '', description: '', media: [] });
+      setResetKey(prev => prev + 1);
+      window.location.reload();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -160,6 +163,7 @@ function SubAdminPanel() {
                   onFilesChange={handleMediaChange}
                   maxFiles={10}
                   acceptedTypes="image/*,video/*"
+                  resetKey={resetKey}
                 />
               </div>
 
